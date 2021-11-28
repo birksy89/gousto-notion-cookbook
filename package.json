@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@notionhq/client": "^0.4.9",
+    "axios": "^0.24.0",
+    "cheerio": "^1.0.0-rc.10",
     "dotenv": "^10.0.0"
   }
 }
