@@ -4,16 +4,14 @@
     "dev": "nodemon src/index.ts"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/cheerio": "^0.22.30",
+    "@types/puppeteer": "^5.4.4",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
   },
   "dependencies": {
     "@notionhq/client": "^0.4.9",
-    "axios": "^0.24.0",
-    "cheerio": "^1.0.0-rc.10",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "puppeteer": "^12.0.1"
   }
 }
