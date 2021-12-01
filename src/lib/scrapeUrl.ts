@@ -1,5 +1,19 @@
 const puppeteer = require("puppeteer");
 
+export interface GoustoMetaData {
+  name: string;
+  description: string;
+  nutrition: {
+    calories: string;
+    carbohydrateContent: string;
+    fatContent: string;
+    fiberContent: string;
+    proteinContent: string;
+    sugarContent: string;
+    sodiumContent: string;
+  };
+}
+
 // Send an async HTTP Get request to the url
 export async function scrapeUrl(url: string) {
   const browser = await puppeteer.launch();
@@ -10,7 +24,7 @@ export async function scrapeUrl(url: string) {
   const element = await page.$('script[type="application/ld+json"]');
   const text = await page.evaluate((element) => element.innerText, element);
 
-  const JSONparsedText = JSON.parse(text);
+  const JSONparsedText: GoustoMetaData = JSON.parse(text);
 
   await browser.close();
 

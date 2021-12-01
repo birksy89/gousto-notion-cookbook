@@ -5,11 +5,11 @@ import { scrapeUrl } from "./lib/scrapeUrl";
 const data = readTextFile("example.txt");
 
 data.map(async (url) => {
-  const meta = await scrapeUrl(url);
+  const metaData = await scrapeUrl(url);
 
-  console.log(meta.description);
+  console.log(metaData.description);
 
-  addItem(meta.name);
+  addItem(metaData);
 });
 
 // addItem("Yurts in Big Sur, California");
