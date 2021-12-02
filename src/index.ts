@@ -21,6 +21,7 @@ const some = titles.slice(0, 3);
 const urls = some.map(async (title) => {
   console.log(title);
 
+  // ! - https://github.com/serpapi/google-search-results-nodejs/issues/4
   try {
     const url = await callSearchGooglePromise(title);
     return url;

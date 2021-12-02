@@ -18,8 +18,12 @@ const searchGoogle = (query, resolve, reject) => {
   };
 
   try {
+    console.log("here");
+
     search.json(params, resolve);
   } catch (e) {
+    console.log("fail...");
+
     reject(e);
   }
 };
