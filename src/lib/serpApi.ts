@@ -3,7 +3,9 @@ require("dotenv").config();
 const SerpApi = require("google-search-results-nodejs");
 const search = new SerpApi.GoogleSearch(process.env.SERPAPI_KEY);
 
-export const searchGoogle = (query: string) => {
+const util = require("util");
+
+const searchGoogle = (query, resolve, reject) => {
   const params = {
     engine: "google",
     q: `site:https://www.gousto.co.uk/cookbook/recipes ${query}`,
@@ -15,10 +17,15 @@ export const searchGoogle = (query: string) => {
     num: "1",
   };
 
-  const callback = function (data) {
-    console.log(data.organic_results[0].link);
-  };
-
-  // Show result as JSON
-  search.json(params, callback);
+  try {
+    search.json(params, resolve);
+  } catch (e) {
+    reject(e);
+  }
 };
+
+const searchGooglePromise = util.promisify(searchGoogle);
+
+export async function callSearchGooglePromise(query) {
+  return await searchGooglePromise(query);
+}

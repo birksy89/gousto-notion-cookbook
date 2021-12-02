@@ -1,7 +1,7 @@
 import { readTextFile } from "./lib/filesystem";
 import { addItem } from "./lib/notion";
 import { scrapeUrl } from "./lib/scrapeUrl";
-import { searchGoogle } from "./lib/serpApi";
+import { callSearchGooglePromise } from "./lib/serpApi";
 
 require("dotenv").config();
 
@@ -14,18 +14,22 @@ require("dotenv").config();
 
 //   addItem(metaData);
 // });
-const data = readTextFile("example-titles.txt");
+const titles = readTextFile("example-titles.txt");
 
-const [first, ...rest] = data;
+const some = titles.slice(0, 3);
 
-console.log(first);
+const urls = some.map(async (title) => {
+  console.log(title);
 
-// data.map(async (title) => {
-//   console.log(title);
+  try {
+    const url = await callSearchGooglePromise(title);
+    return url;
+  } catch (error) {
+    console.log("something went wrong");
+  }
+});
 
-const metaData = searchGoogle(first);
+console.log("xxxxxxxxxxxxxxxxx");
 
-console.log("xxxxxxxxxxxx");
-
-console.log(metaData);
+console.log(urls);
 // });
