@@ -2,7 +2,7 @@ import { readTextFile } from "./lib/filesystem";
 import { addItem } from "./lib/notion";
 import { scrapeUrl } from "./lib/scrapeUrl";
 
-const data = readTextFile("example.txt");
+const data = readTextFile("example-urls.txt");
 
 data.map(async (url) => {
   const metaData = await scrapeUrl(url);
@@ -11,5 +11,3 @@ data.map(async (url) => {
 
   addItem(metaData);
 });
-
-// addItem("Yurts in Big Sur, California");
