@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const SerpApi = require("google-search-results-nodejs");
 const search = new SerpApi.GoogleSearch(process.env.SERPAPI_KEY);
 
@@ -14,8 +16,7 @@ export const searchGoogle = (query: string) => {
   };
 
   const callback = function (data) {
-    console.log(data);
-    console.log(data.organicResults[0].link);
+    console.log(data.organic_results[0].link);
   };
 
   // Show result as JSON

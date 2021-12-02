@@ -1,13 +1,31 @@
 import { readTextFile } from "./lib/filesystem";
 import { addItem } from "./lib/notion";
 import { scrapeUrl } from "./lib/scrapeUrl";
+import { searchGoogle } from "./lib/serpApi";
 
-const data = readTextFile("example-urls.txt");
+require("dotenv").config();
 
-data.map(async (url) => {
-  const metaData = await scrapeUrl(url);
+// const data = readTextFile("example-urls.txt");
 
-  console.log(metaData.description);
+// data.map(async (url) => {
+//   const metaData = await scrapeUrl(url);
 
-  addItem(metaData);
-});
+//   console.log(metaData.description);
+
+//   addItem(metaData);
+// });
+const data = readTextFile("example-titles.txt");
+
+const [first, ...rest] = data;
+
+console.log(first);
+
+// data.map(async (title) => {
+//   console.log(title);
+
+const metaData = searchGoogle(first);
+
+console.log("xxxxxxxxxxxx");
+
+console.log(metaData);
+// });
