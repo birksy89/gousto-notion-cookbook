@@ -14,7 +14,7 @@ getJson[util.promisify.custom] = (params) => {
 
 const promisifiedGetJson = util.promisify(getJson);
 
-export async function main(query) {
+export async function getGoogleSearch(query: string): Promise<string> {
   const params = {
     engine: "google",
     q: `site:https://www.gousto.co.uk/cookbook/recipes ${query}`,
@@ -30,11 +30,13 @@ export async function main(query) {
     console.log(`Searching for ${query}`);
 
     const data = await promisifiedGetJson(params);
-    console.log(data);
 
-    console.log("data", data.organic_results[0].link);
+    if (!data.organic_results) {
+      throw new Error(`No results found for ${query}`);
+    }
+
     return data.organic_results[0].link;
   } catch (error) {
-    console.error("there was an error:", error.message);
+    console.error("There was an error:", error.message);
   }
 }
