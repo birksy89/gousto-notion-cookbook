@@ -2,6 +2,13 @@ import { readTextFile } from "./lib/filesystem";
 import { addItem } from "./lib/notion";
 import { scrapeUrl } from "./lib/scrapeUrl";
 import { getGoogleSearch } from "./lib/serpApi";
+import Bottleneck from "bottleneck";
+
+const limiter = new Bottleneck({
+  //  If you need to limit to 60 requests per minute, set minTime to 1000 ms and maxConcurrent to 1.
+  maxConcurrent: 1,
+  minTime: 1000,
+});
 
 (async () => {
   try {
@@ -11,26 +18,26 @@ import { getGoogleSearch } from "./lib/serpApi";
 
     const titles = readTextFile("example-titles.txt");
 
-    // const someTitles = titles.slice(0, 3);
+    const someTitles = titles.slice(0, 10);
 
     const urls = await Promise.all(
-      titles
-        .map(async (title) => {
-          // const title = "pizza";
-          console.log("Title: ", title);
-          const result = await getGoogleSearch(title);
-          console.log("result: ", result);
+      someTitles.map(async (title) => {
+        // const title = "pizza";
+        console.log("Title: ", title);
+        // const result = await getGoogleSearch(title);
+        const result = await limiter.schedule(() => getGoogleSearch(title));
+        console.log("result: ", result);
 
-          if (result.includes("?page")) {
-            throw new Error(`Cannot find page for ${title}`);
-          }
+        if (result.includes("?page")) {
+          console.log(`Cannot find page for ${title}`);
+          return;
+        }
 
-          return result;
-        })
-        .filter(Boolean)
+        return result;
+      })
     );
 
-    urls.map(async (url) => {
+    urls.filter(Boolean).map(async (url) => {
       const metaData = await scrapeUrl(url);
       console.log(metaData.description);
       // Could compare the original title with the scraped title

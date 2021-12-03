@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@notionhq/client": "^0.4.9",
+    "bottleneck": "^2.19.5",
     "dotenv": "^10.0.0",
     "google-search-results-nodejs": "^2.0.1",
     "moment": "^2.29.1",
