@@ -9,18 +9,12 @@ import { getGoogleSearch } from "./lib/serpApi";
 
     // const data = readTextFile("example-urls.txt");
 
-    // data.map(async (url) => {
-    //   const metaData = await scrapeUrl(url);
-    //   console.log(metaData.description);
-    //   addItem(metaData);
-    // });
-
     const titles = readTextFile("example-titles.txt");
 
-    const some = titles.slice(0, 3);
+    const someTitles = titles.slice(0, 3);
 
     const urls = await Promise.all(
-      some.map(async (title) => {
+      someTitles.map(async (title) => {
         // const title = "pizza";
         console.log("Title: ", title);
         const result = await getGoogleSearch(title);
@@ -29,6 +23,15 @@ import { getGoogleSearch } from "./lib/serpApi";
         return result;
       })
     );
+
+    urls.map(async (url) => {
+      const metaData = await scrapeUrl(url);
+      console.log(metaData.description);
+      // Could compare the original title with the scraped title
+      // and only add the item if they match certain %
+      // https://www.npmjs.com/package/string-similarity
+      addItem(metaData);
+    });
 
     console.log(urls);
 

@@ -7,7 +7,7 @@ const notion = new Client({ auth: process.env.NOTION_KEY });
 
 const databaseId = process.env.NOTION_DATABASE_ID;
 
-export async function addItem({ name, nutrition }: GoustoMetaData) {
+export async function addItem({ name, nutrition, totalTime }: GoustoMetaData) {
   try {
     const response = await notion.pages.create({
       parent: { database_id: databaseId },

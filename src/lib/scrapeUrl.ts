@@ -1,17 +1,44 @@
 const puppeteer = require("puppeteer");
 
 export interface GoustoMetaData {
+  "@context": string;
+  "@type": string;
   name: string;
+  author: Author;
+  image: string;
   description: string;
-  nutrition: {
-    calories: string;
-    carbohydrateContent: string;
-    fatContent: string;
-    fiberContent: string;
-    proteinContent: string;
-    sugarContent: string;
-    sodiumContent: string;
-  };
+  recipeYield: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+  nutrition: Nutrition;
+  aggregateRating: AggregateRating;
+  recipeCategory: string;
+  recipeCuisine: string;
+  totalTime: string;
+}
+
+export interface AggregateRating {
+  "@type": string;
+  ratingValue: number;
+  reviewCount: number;
+}
+
+export interface Author {
+  "@type": string;
+  "@id": string;
+  name: string;
+  url: string;
+}
+
+export interface Nutrition {
+  "@type": string;
+  calories: string;
+  carbohydrateContent: string;
+  fatContent: string;
+  fiberContent: string;
+  proteinContent: string;
+  sugarContent: string;
+  sodiumContent: string;
 }
 
 // Send an async HTTP Get request to the url
