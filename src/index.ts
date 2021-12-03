@@ -11,17 +11,23 @@ import { getGoogleSearch } from "./lib/serpApi";
 
     const titles = readTextFile("example-titles.txt");
 
-    const someTitles = titles.slice(0, 3);
+    // const someTitles = titles.slice(0, 3);
 
     const urls = await Promise.all(
-      someTitles.map(async (title) => {
-        // const title = "pizza";
-        console.log("Title: ", title);
-        const result = await getGoogleSearch(title);
-        console.log("result: ", result);
+      titles
+        .map(async (title) => {
+          // const title = "pizza";
+          console.log("Title: ", title);
+          const result = await getGoogleSearch(title);
+          console.log("result: ", result);
 
-        return result;
-      })
+          if (result.includes("?page")) {
+            throw new Error(`Cannot find page for ${title}`);
+          }
+
+          return result;
+        })
+        .filter(Boolean)
     );
 
     urls.map(async (url) => {
