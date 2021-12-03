@@ -18,7 +18,7 @@ const limiter = new Bottleneck({
 
     const titles = readTextFile("example-titles.txt");
 
-    const someTitles = titles.slice(0, 10);
+    const someTitles = titles.slice(50, 70);
 
     const urls = await Promise.all(
       someTitles.map(async (title) => {
@@ -38,7 +38,7 @@ const limiter = new Bottleneck({
     );
 
     urls.filter(Boolean).map(async (url) => {
-      const metaData = await scrapeUrl(url);
+      const metaData = await limiter.schedule(() => scrapeUrl(url));
       console.log(metaData.description);
       // Could compare the original title with the scraped title
       // and only add the item if they match certain %
