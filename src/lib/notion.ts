@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import { GoustoMetaData } from "./scrapeUrl";
+import moment from "moment";
 
 require("dotenv").config();
 
@@ -24,6 +25,10 @@ export async function addItem({ name, nutrition, totalTime }: GoustoMetaData) {
         Protein: {
           type: "number",
           number: parseFloat(nutrition.proteinContent),
+        },
+        Duration: {
+          type: "number",
+          number: moment.duration(totalTime).asMinutes(),
         },
       },
     });
