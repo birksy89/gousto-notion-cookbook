@@ -1,11 +1,20 @@
+// https://github.com/serpapi/google-search-results-nodejs/issues/4
 require("dotenv").config();
-
+const util = require("util");
 const SerpApi = require("google-search-results-nodejs");
 const search = new SerpApi.GoogleSearch(process.env.SERPAPI_KEY);
 
-const util = require("util");
+const getJson = search.json.bind(search);
 
-const searchGoogle = (query, resolve, reject) => {
+getJson[util.promisify.custom] = (params) => {
+  return new Promise((resolve, reject) => {
+    getJson(params, resolve, reject);
+  });
+};
+
+const promisifiedGetJson = util.promisify(getJson);
+
+export async function main(query) {
   const params = {
     engine: "google",
     q: `site:https://www.gousto.co.uk/cookbook/recipes ${query}`,
@@ -14,22 +23,18 @@ const searchGoogle = (query, resolve, reject) => {
     gl: "uk",
     hl: "en",
     //   Number of search results to return
-    num: "1",
+    num: "5",
   };
 
   try {
-    console.log("here");
+    console.log(`Searching for ${query}`);
 
-    search.json(params, resolve);
-  } catch (e) {
-    console.log("fail...");
+    const data = await promisifiedGetJson(params);
+    console.log(data);
 
-    reject(e);
+    console.log("data", data.organic_results[0].link);
+    return data.organic_results[0].link;
+  } catch (error) {
+    console.error("there was an error:", error.message);
   }
-};
-
-const searchGooglePromise = util.promisify(searchGoogle);
-
-export async function callSearchGooglePromise(query) {
-  return await searchGooglePromise(query);
 }

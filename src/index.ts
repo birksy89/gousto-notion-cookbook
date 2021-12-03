@@ -1,36 +1,34 @@
 import { readTextFile } from "./lib/filesystem";
 import { addItem } from "./lib/notion";
 import { scrapeUrl } from "./lib/scrapeUrl";
-import { callSearchGooglePromise } from "./lib/serpApi";
+import { main } from "./lib/serpApi";
 
-require("dotenv").config();
+(async () => {
+  try {
+    var text = await main("tacos");
+    console.log(text);
+  } catch (e) {
+    // Deal with the fact the chain failed
+  }
+})();
 
 // const data = readTextFile("example-urls.txt");
 
 // data.map(async (url) => {
 //   const metaData = await scrapeUrl(url);
-
 //   console.log(metaData.description);
-
 //   addItem(metaData);
 // });
-const titles = readTextFile("example-titles.txt");
 
-const some = titles.slice(0, 3);
+// const titles = readTextFile("example-titles.txt");
 
-const urls = some.map(async (title) => {
-  console.log(title);
+// const some = titles.slice(0, 3);
 
-  // ! - https://github.com/serpapi/google-search-results-nodejs/issues/4
-  try {
-    const url = await callSearchGooglePromise(title);
-    return url;
-  } catch (error) {
-    console.log("something went wrong");
-  }
-});
-
-console.log("xxxxxxxxxxxxxxxxx");
-
-console.log(urls);
+// const urls = await some.map(async (title) => {
+//   console.log("title", title);
+//   const result = await main(title);
+//   console.log(result);
+//   return result;
 // });
+
+// console.log(urls);
